@@ -6,7 +6,7 @@ use Mix.Config
 config :fenway, :viewport, %{
   name: :main_viewport,
   size: {1024, 600},
-  default_scene: {Fenway.Scene.Splash, Fenway.Scene.Sensor},
+  default_scene: {Fenway.Scene.Sensor, []},
   drivers: [
     %{
       module: Scenic.Driver.Glfw,
