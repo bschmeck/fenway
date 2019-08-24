@@ -40,7 +40,7 @@ defmodule Fenway.Scene.Sensor do
 
     # build the graph
     graph =
-      Graph.build(font: :roboto, font_size: 16, theme: :dark)
+      Graph.build(font: :roboto, font_size: 16, clear_color: {84, 121, 109})
       # text input
       |> group(
         fn graph ->
@@ -82,8 +82,8 @@ defmodule Fenway.Scene.Sensor do
       |> Nav.add_to_graph(__MODULE__)
       |> Notes.add_to_graph(@notes)
 
-    # subscribe to the simulated temperature sensor
-    Sensor.subscribe(:temperature)
+      # subscribe to the simulated temperature sensor
+      Sensor.subscribe(:temperature)
 
     {:ok, graph, push: graph}
   end
