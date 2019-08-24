@@ -5,7 +5,7 @@ use Mix.Config
 # Configure the main viewport for the Scenic application
 config :fenway, :viewport, %{
   name: :main_viewport,
-  size: {700, 600},
+  size: {1024, 600},
   default_scene: {Fenway.Scene.Splash, Fenway.Scene.Sensor},
   drivers: [
     %{
