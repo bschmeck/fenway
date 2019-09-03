@@ -49,7 +49,7 @@ defmodule Fenway.Component.AtBat do
       |> circle_at({1, 6}, number)
       |> circle_at({2, 6}, number)
       |> circle_at({3, 6}, number)
-    end, translate: {500, 200})
+    end)
   end
 
   defp circle_at(graph, {x, y}, number) do

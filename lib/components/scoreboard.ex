@@ -12,7 +12,7 @@ defmodule Fenway.Component.Scoreboard do
   def init(_state, _opts) do
     graph = Graph.build([])
     |> rectangle({984, 560}, stroke: {10, :white}, fill: @scoreboard_color, translate: {20, 20})
-    |> Fenway.Component.AtBat.add_to_graph(0, [])
+    |> Fenway.Component.AtBat.add_to_graph(0, translate: { 40, 420})
 
     {:ok, %{}, push: graph}
   end
