@@ -56,6 +56,8 @@ defmodule Fenway.Component.AtBat do
     circle(graph, 8, fill: color_at({x, y}, number), translate: {20 * x + 10, 20 * y + 10})
   end
 
+  defp color_at(_, :off), do: @bulb_off_color
+
   defp color_at({1, 3}, 0), do: @bulb_off_color
   defp color_at({2, 3}, 0), do: @bulb_off_color
   defp color_at(_, 0), do: @bulb_on_color
