@@ -28,7 +28,7 @@ defmodule Fenway.Component.AtBat do
     Graph.build([])
     |> group(fn(graph) ->
       graph
-      |> rectangle({80, 140}, fill: :gray)
+      |> rectangle({36, 63}, fill: :gray)
       |> circle_at({0, 0}, number)
       |> circle_at({1, 0}, number)
       |> circle_at({2, 0}, number)
@@ -50,10 +50,34 @@ defmodule Fenway.Component.AtBat do
       |> circle_at({2, 6}, number)
       |> circle_at({3, 6}, number)
     end)
+    |> group(fn(graph) ->
+      graph
+      |> rectangle({36, 63}, fill: :gray)
+      |> circle_at({0, 0}, number)
+      |> circle_at({1, 0}, number)
+      |> circle_at({2, 0}, number)
+      |> circle_at({3, 0}, number)
+      |> circle_at({0, 1}, number)
+      |> circle_at({3, 1}, number)
+      |> circle_at({0, 2}, number)
+      |> circle_at({3, 2}, number)
+      |> circle_at({0, 3}, number)
+      |> circle_at({1, 3}, number)
+      |> circle_at({2, 3}, number)
+      |> circle_at({3, 3}, number)
+      |> circle_at({0, 4}, number)
+      |> circle_at({3, 4}, number)
+      |> circle_at({0, 5}, number)
+      |> circle_at({3, 5}, number)
+      |> circle_at({0, 6}, number)
+      |> circle_at({1, 6}, number)
+      |> circle_at({2, 6}, number)
+      |> circle_at({3, 6}, number)
+    end, translate: {46, 0})
   end
 
   defp circle_at(graph, {x, y}, number) do
-    circle(graph, 8, fill: color_at({x, y}, number), translate: {20 * x + 10, 20 * y + 10})
+    circle(graph, 4, fill: color_at({x, y}, number), translate: {9 * x + 4, 9 * y + 4})
   end
 
   defp color_at(_, :off), do: @bulb_off_color
