@@ -4,7 +4,7 @@ defmodule Fenway.Component.Scoreboard do
   import Scenic.Primitives
   alias Scenic.Graph
 
-  @scoreboard_color {73, 78, 68}
+  @scoreboard_color {68, 68, 65}
 
   def info(_), do: "error"
   def verify(data), do: {:ok, data}
