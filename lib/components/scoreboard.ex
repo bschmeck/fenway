@@ -15,6 +15,9 @@ defmodule Fenway.Component.Scoreboard do
     |> rectangle({980, 10}, fill: :white, translate: {20, 248})
     |> rectangle({10, 306}, fill: :white, translate: {800, 78})
     |> Fenway.Component.AtBat.add_to_graph(0, translate: {120, 320})
+    |> Fenway.Component.Indicator.add_to_graph([3, :blue], translate: {255, 360})
+    |> Fenway.Component.Indicator.add_to_graph([2, :red], translate: {460, 360})
+    |> Fenway.Component.Indicator.add_to_graph([2, :red], translate: {605, 360})
 
     {:ok, %{}, push: graph}
   end
