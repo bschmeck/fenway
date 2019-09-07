@@ -32,6 +32,7 @@ defmodule Fenway.Component.Scoreboard do
     |> text("A", fill: :white, font_size: 40, translate: {670, 60})
     |> text("R", fill: :white, font_size: 40, translate: {725, 60})
     |> text("K", fill: :white, font_size: 40, translate: {780, 60})
+    |> text("P", fill: :white, font_size: 40, translate: {100, 100})
     |> text("1", fill: :white, font_size: 40, translate: {320, 100})
     |> text("2", fill: :white, font_size: 40, translate: {360, 100})
     |> text("3", fill: :white, font_size: 40, translate: {400, 100})
