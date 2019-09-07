@@ -22,6 +22,16 @@ defmodule Fenway.Component.Scoreboard do
     |> text("BALL", fill: :white, font_size: 40, translate: {265, 318})
     |> text("STRIKE", fill: :white, font_size: 40, translate: {425, 318})
     |> text("OUT", fill: :white, font_size: 40, translate: {595, 318})
+    |> text("F", fill: :white, font_size: 40, translate: {207, 60})
+    |> text("E", fill: :white, font_size: 40, translate: {267, 60})
+    |> text("N", fill: :white, font_size: 40, translate: {327, 60})
+    |> text("W", fill: :white, font_size: 40, translate: {387, 60})
+    |> text("A", fill: :white, font_size: 40, translate: {447, 60})
+    |> text("Y", fill: :white, font_size: 40, translate: {507, 60})
+    |> text("P", fill: :white, font_size: 40, translate: {615, 60})
+    |> text("A", fill: :white, font_size: 40, translate: {670, 60})
+    |> text("R", fill: :white, font_size: 40, translate: {725, 60})
+    |> text("K", fill: :white, font_size: 40, translate: {780, 60})
 
     {:ok, %{}, push: graph}
   end
