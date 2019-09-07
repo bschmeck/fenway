@@ -42,6 +42,9 @@ defmodule Fenway.Component.Scoreboard do
     |> text("8", fill: :white, font_size: 40, translate: {660, 100})
     |> text("9", fill: :white, font_size: 40, translate: {700, 100})
     |> text("10", fill: :white, font_size: 40, translate: {755, 100})
+    |> text("R", fill: :white, font_size: 40, translate: {835, 100})
+    |> text("H", fill: :white, font_size: 40, translate: {900, 100})
+    |> text("E", fill: :white, font_size: 40, translate: {965, 100})
 
     {:ok, %{}, push: graph}
   end
