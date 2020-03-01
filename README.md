@@ -1,4 +1,1 @@
-Readme text goes here
-
-
-From template
+Launch with `mix scenic.run`
