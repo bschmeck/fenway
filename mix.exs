@@ -25,6 +25,7 @@ defmodule Fenway.MixProject do
     [
       {:scenic, "~> 0.10"},
       {:scenic_driver_glfw, "~> 0.10", targets: :host},
+      {:httpoison, "~> 1.6"},
 
       # These deps are optional and are included as they are often used.
       # If your app doesn't need them, they are safe to remove.
