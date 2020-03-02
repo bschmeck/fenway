@@ -19,61 +19,46 @@ defmodule Fenway.Component.AtBat do
   end
 
   def handle_info(:tick, %{number: number}) do
-    number = rem(number + 1, 10)
+    number = rem(number + 1, 100)
 
     {:noreply, %{number: number}, [push: graph_for(number)]}
   end
 
+  defp graph_for(number) when number < 10 do
+    Graph.build([])
+    |> group(fn(graph) -> digit(graph, :off) end)
+    |> group(fn(graph) -> digit(graph, rem(number, 10)) end, translate: {46, 0})
+  end
+
   defp graph_for(number) do
     Graph.build([])
-    |> group(fn(graph) ->
-      graph
-      |> rectangle({36, 63}, fill: :gray)
-      |> circle_at({0, 0}, number)
-      |> circle_at({1, 0}, number)
-      |> circle_at({2, 0}, number)
-      |> circle_at({3, 0}, number)
-      |> circle_at({0, 1}, number)
-      |> circle_at({3, 1}, number)
-      |> circle_at({0, 2}, number)
-      |> circle_at({3, 2}, number)
-      |> circle_at({0, 3}, number)
-      |> circle_at({1, 3}, number)
-      |> circle_at({2, 3}, number)
-      |> circle_at({3, 3}, number)
-      |> circle_at({0, 4}, number)
-      |> circle_at({3, 4}, number)
-      |> circle_at({0, 5}, number)
-      |> circle_at({3, 5}, number)
-      |> circle_at({0, 6}, number)
-      |> circle_at({1, 6}, number)
-      |> circle_at({2, 6}, number)
-      |> circle_at({3, 6}, number)
-    end)
-    |> group(fn(graph) ->
-      graph
-      |> rectangle({36, 63}, fill: :gray)
-      |> circle_at({0, 0}, number)
-      |> circle_at({1, 0}, number)
-      |> circle_at({2, 0}, number)
-      |> circle_at({3, 0}, number)
-      |> circle_at({0, 1}, number)
-      |> circle_at({3, 1}, number)
-      |> circle_at({0, 2}, number)
-      |> circle_at({3, 2}, number)
-      |> circle_at({0, 3}, number)
-      |> circle_at({1, 3}, number)
-      |> circle_at({2, 3}, number)
-      |> circle_at({3, 3}, number)
-      |> circle_at({0, 4}, number)
-      |> circle_at({3, 4}, number)
-      |> circle_at({0, 5}, number)
-      |> circle_at({3, 5}, number)
-      |> circle_at({0, 6}, number)
-      |> circle_at({1, 6}, number)
-      |> circle_at({2, 6}, number)
-      |> circle_at({3, 6}, number)
-    end, translate: {46, 0})
+    |> group(fn(graph) -> digit(graph, div(number, 10)) end)
+    |> group(fn(graph) -> digit(graph, rem(number, 10)) end, translate: {46, 0})
+  end
+
+  defp digit(graph, number) do
+    graph
+    |> rectangle({36, 63}, fill: :gray)
+    |> circle_at({0, 0}, number)
+    |> circle_at({1, 0}, number)
+    |> circle_at({2, 0}, number)
+    |> circle_at({3, 0}, number)
+    |> circle_at({0, 1}, number)
+    |> circle_at({3, 1}, number)
+    |> circle_at({0, 2}, number)
+    |> circle_at({3, 2}, number)
+    |> circle_at({0, 3}, number)
+    |> circle_at({1, 3}, number)
+    |> circle_at({2, 3}, number)
+    |> circle_at({3, 3}, number)
+    |> circle_at({0, 4}, number)
+    |> circle_at({3, 4}, number)
+    |> circle_at({0, 5}, number)
+    |> circle_at({3, 5}, number)
+    |> circle_at({0, 6}, number)
+    |> circle_at({1, 6}, number)
+    |> circle_at({2, 6}, number)
+    |> circle_at({3, 6}, number)
   end
 
   defp circle_at(graph, {x, y}, number) do
