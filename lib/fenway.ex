@@ -9,7 +9,6 @@ defmodule Fenway do
 
     # start the application with the viewport
     children = [
-      Fenway.Sensor.Supervisor,
       {Scenic, viewports: [main_viewport_config]}
     ]
 

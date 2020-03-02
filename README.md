@@ -1,10 +1,6 @@
 Launch with `mix scenic.run`
 
-Mix will boot the Fenway application, which loads viewport config via Application.get_env and starts two children:
-1. `Fenway.Sensor.Supervisor`
-2. Scenic, with the loaded viewport config
-
-The Sensor.Supervisor came with the default Scenic app, I'm not sure why it's still around.
+Mix will boot the Fenway application, which loads viewport config via Application.get_env and starts Scenic, with the loaded viewport config.
 
 The viewport config loads the Monster scene, which builds a graph, adds the Scoreboard component and pushes it.
 
