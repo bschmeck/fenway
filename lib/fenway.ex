@@ -9,6 +9,7 @@ defmodule Fenway do
 
     # start the application with the viewport
     children = [
+      {Registry, keys: :unique, name: Registry.Components},
       {Scenic, viewports: [main_viewport_config]}
     ]
 

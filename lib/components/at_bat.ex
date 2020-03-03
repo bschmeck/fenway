@@ -13,15 +13,13 @@ defmodule Fenway.Component.AtBat do
   def init(number, _opts) do
     graph = graph_for(number)
 
-    {:ok, _timer} = :timer.send_interval(:timer.seconds(2), :tick)
+    {:ok, _} = Registry.register(Registry.Components, "at_bat", [])
 
     {:ok, %{number: number}, push: graph}
   end
 
-  def handle_info(:tick, %{number: number}) do
-    number = rem(number + 1, 100)
-
-    {:noreply, %{number: number}, [push: graph_for(number)]}
+  def handle_info({:at_bat, number}, state) do
+    {:noreply, state, [push: graph_for(number)]}
   end
 
   defp graph_for(number) when number < 10 do
