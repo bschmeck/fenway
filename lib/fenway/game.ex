@@ -4,6 +4,10 @@ defmodule Fenway.Game do
   def get(game_id) do
     {:ok, json} = Fetcher.fetch(game_id, FileClient)
 
+    parse(json)
+  end
+
+  def parse(json) do
     %__MODULE__{at_bat: batter_number(json),
                 balls: balls(json),
                 strikes: strikes(json),
