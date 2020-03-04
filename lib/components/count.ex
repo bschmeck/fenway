@@ -7,10 +7,10 @@ defmodule Fenway.Component.Count do
   def info(_), do: "error"
   def verify(data), do: {:ok, data}
 
-  def init(count, _opts) do
+  def init({name, count}, _opts) do
     graph = graph_for(count)
 
-    {:ok, _} = Registry.register(Registry.Components, "count", [])
+    {:ok, _} = Registry.register(Registry.Components, name, [])
 
     {:ok, %{count: count}, push: graph}
   end

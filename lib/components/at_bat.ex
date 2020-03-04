@@ -10,10 +10,10 @@ defmodule Fenway.Component.AtBat do
   def info(_), do: "error"
   def verify(data), do: {:ok, data}
 
-  def init(number, _opts) do
+  def init({name, number}, _opts) do
     graph = graph_for(number)
 
-    {:ok, _} = Registry.register(Registry.Components, "at_bat", [])
+    {:ok, _} = Registry.register(Registry.Components, name, [])
 
     {:ok, %{number: number}, push: graph}
   end
