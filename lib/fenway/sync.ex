@@ -19,11 +19,16 @@ defmodule Fenway.Sync do
     # 3. Schedule next sync for the future
     game = Fenway.Game.get(game_id)
 
-    [{pid, _}] = Registry.lookup(Registry.Components, "at_bat")
-    GenServer.cast(pid, {:at_bat, game.at_bat})
-    [{pid, _}] = Registry.lookup(Registry.Components, "count")
-    GenServer.cast(pid, {:count, {game.balls, game.strikes, game.outs}})
+    notify("at_bat", {:at_bat, game.at_bat})
+    notify("count", {:count, {game.balls, game.strikes, game.outs}})
 
     {:noreply, game_id}
+  end
+
+  defp notify(name, msg) do
+    case Registry.lookup(Registry.Components, name) do
+      [{pid, _}] -> GenServer.cast(pid, msg)
+      _ -> :no_op
+    end
   end
 end
