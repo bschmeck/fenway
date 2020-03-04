@@ -46,12 +46,14 @@ defmodule Fenway.Game do
   defp path_to(:balls), do: ~w[liveData plays currentPlay count balls]
   defp path_to(:outs), do: ~w[liveData plays currentPlay count outs]
   defp path_to(:strikes), do: ~w[liveData plays currentPlay count strikes]
-  defp path_to(:away_errors), do: ~w[liveData boxscore teams away teamStats fielding errors]
-  defp path_to(:away_hits), do: ~w[liveData boxscore teams away teamStats batting hits]
-  defp path_to(:away_runs), do: ~w[liveData boxscore teams away teamStats batting runs]
-  defp path_to(:home_errors), do: ~w[liveData boxscore teams home teamStats fielding errors]
-  defp path_to(:home_hits), do: ~w[liveData boxscore teams home teamStats batting hits]
-  defp path_to(:home_runs), do: ~w[liveData boxscore teams home teamStats batting runs]
+  defp path_to(:away_errors), do: team_stats_path("away", "fielding", "errors")
+  defp path_to(:away_hits), do: team_stats_path("away", "batting", "hits")
+  defp path_to(:away_runs), do: team_stats_path("away", "batting", "runs")
+  defp path_to(:home_errors), do: team_stats_path("home", "fielding", "errors")
+  defp path_to(:home_hits), do: team_stats_path("home", "batting", "hits")
+  defp path_to(:home_runs), do: team_stats_path("home", "batting", "runs")
+
+  defp team_stats_path(team, category, stat), do: ["liveData", "boxscore", "teams", team, "teamStats", category, stat]
 
   defp dig(value, []), do: value
   defp dig(map, [key | rest]), do: map |> Map.get(key) |> dig(rest)
