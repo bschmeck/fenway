@@ -18,7 +18,7 @@ defmodule Fenway.Component.AtBat do
     {:ok, %{number: number}, push: graph}
   end
 
-  def handle_info({:at_bat, number}, state) do
+  def handle_cast({:at_bat, number}, state) do
     {:noreply, state, [push: graph_for(number)]}
   end
 
