@@ -4,11 +4,11 @@ defmodule Fenway.Game do
   def get(game_id) do
     {:ok, json} = Fetcher.fetch(game_id, FileClient)
 
-    %__MODULE__{at_bat: batter_number(json), balls: 2, strikes: 2, outs: 1}
+    %__MODULE__{at_bat: batter_number(json),
+                balls: balls(json),
+                strikes: strikes(json),
+                outs: outs(json)}
   end
-
-  defp dig(value, []), do: value
-  defp dig(map, [key | rest]), do: map |> Map.get(key) |> dig(rest)
 
   defp batter_number(json) do
     batter_id = dig(json, ~w[liveData linescore offense batter id])
@@ -20,4 +20,19 @@ defmodule Fenway.Game do
       _ -> nil
     end
   end
+
+  defp balls(json) do
+    dig(json, ~w[liveData plays currentPlay count balls])
+  end
+
+  defp outs(json) do
+    dig(json, ~w[liveData plays currentPlay count outs])
+  end
+
+  defp strikes(json) do
+    dig(json, ~w[liveData plays currentPlay count strikes])
+  end
+
+  defp dig(value, []), do: value
+  defp dig(map, [key | rest]), do: map |> Map.get(key) |> dig(rest)
 end
