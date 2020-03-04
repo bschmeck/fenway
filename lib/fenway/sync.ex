@@ -12,10 +12,16 @@ defmodule Fenway.Sync do
   end
 
   @impl true
-  def handle_info(:tick, n) do
-    [{pid, _}] = Registry.lookup(Registry.Components, "at_bat")
-    GenServer.cast(pid, {:at_bat, n})
+  def handle_info(:tick, game_id) do
+    # 1. Retrieve %Fenway.Game{} data from MLB
+    # 2. Push game state to Scenic components
+    # 2a. Is it preferable to push the whole game to the scoreboard and let it update components?
+    # 3. Schedule next sync for the future
+    game = Fenway.Game.get(game_id)
 
-    {:noreply, n + 1}
+    [{pid, _}] = Registry.lookup(Registry.Components, "at_bat")
+    GenServer.cast(pid, {:at_bat, game.at_bat})
+
+    {:noreply, game_id}
   end
 end
