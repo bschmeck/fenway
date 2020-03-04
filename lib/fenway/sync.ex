@@ -21,6 +21,8 @@ defmodule Fenway.Sync do
 
     [{pid, _}] = Registry.lookup(Registry.Components, "at_bat")
     GenServer.cast(pid, {:at_bat, game.at_bat})
+    [{pid, _}] = Registry.lookup(Registry.Components, "count")
+    GenServer.cast(pid, {:count, {game.balls, game.strikes, game.outs}})
 
     {:noreply, game_id}
   end

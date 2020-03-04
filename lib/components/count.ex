@@ -15,12 +15,17 @@ defmodule Fenway.Component.Count do
     {:ok, %{count: count}, push: graph}
   end
 
-  defp graph_for({balls, strikes, outs})  when balls >= 0 and balls <= 3 and strikes >= 0 and strikes <= 2 and outs >= 0 and outs <= 2 do
+  def handle_cast({:count, count}, state) do
+    {:noreply, state, [push: graph_for(count)]}
+  end
+
+  defp graph_for({balls, strikes, outs}) when balls >= 0 and balls <= 3 and strikes >= 0 and strikes <= 2 and outs >= 0 and outs <= 2 do
     Graph.build([])
     |> group(fn(graph) -> indicators(graph, 3, balls, :blue, {:blue, 128}) end)
     |> group(fn(graph) -> indicators(graph, 2, strikes, :red, {:red, 128}) end, translate: {205, 0})
     |> group(fn(graph) -> indicators(graph, 2, outs, :red, {:red, 128}) end, translate: {350, 0})
   end
+  defp graph_for(_), do: graph_for({0, 0, 0})
 
   defp indicators(graph, total, on, on_color, off_color) do
     color_list = colors(total, on, on_color, off_color, [])

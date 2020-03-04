@@ -1,10 +1,10 @@
 defmodule Fenway.Game do
-  defstruct [:at_bat]
+  defstruct [:at_bat, :balls, :outs, :strikes]
 
   def get(game_id) do
     {:ok, json} = Fetcher.fetch(game_id, FileClient)
 
-    %__MODULE__{at_bat: batter_number(json)}
+    %__MODULE__{at_bat: batter_number(json), balls: 2, strikes: 2, outs: 1}
   end
 
   defp dig(value, []), do: value
