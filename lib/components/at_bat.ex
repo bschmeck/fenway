@@ -22,16 +22,13 @@ defmodule Fenway.Component.AtBat do
     {:noreply, state, [push: graph_for(number)]}
   end
 
-  defp graph_for(number) when number < 10 do
+  defp graph_for(number) when number < 10, do: graph_for(:off, number)
+  defp graph_for(number) when number < 100, do: graph_for(div(number, 10), rem(number, 10))
+  defp graph_for(_), do: graph_for(:off, :off)
+  defp graph_for(digit_1, digit_2) do
     Graph.build([])
-    |> group(fn(graph) -> digit(graph, :off) end)
-    |> group(fn(graph) -> digit(graph, rem(number, 10)) end, translate: {46, 0})
-  end
-
-  defp graph_for(number) do
-    Graph.build([])
-    |> group(fn(graph) -> digit(graph, div(number, 10)) end)
-    |> group(fn(graph) -> digit(graph, rem(number, 10)) end, translate: {46, 0})
+    |> group(fn(graph) -> digit(graph, digit_1) end)
+    |> group(fn(graph) -> digit(graph, digit_2) end, translate: {46, 0})
   end
 
   defp digit(graph, number) do
