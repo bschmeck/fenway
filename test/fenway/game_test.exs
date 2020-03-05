@@ -13,6 +13,10 @@ defmodule Fenway.GameTest do
     assert %{at_bat: 39} = Fenway.Game.parse(context[:json])
   end
 
+  test "it retrieves the number of the current pitcher", context do
+    assert %{pitcher: 44} = Fenway.Game.parse(context[:json])
+  end
+
   test "it retrieves the number of balls", context do
     assert %{balls: 0} = Fenway.Game.parse(context[:json])
   end
