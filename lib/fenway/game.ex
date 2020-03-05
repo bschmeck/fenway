@@ -17,10 +17,11 @@ defmodule Fenway.Game do
     }
   end
 
-  defp retrieve(json, :batter_number) do
-    batter_id = dig(json, ~w[liveData linescore offense batter id])
-
-    raw = dig(json, ["gameData", "players", "ID#{batter_id}", "primaryNumber"])
+  defp retrieve(%{"liveData" => %{"linescore" => %{"offense" => %{"batter" => %{"id" => batter_id}}}}} = json, :batter_number) do
+    # Elixir complains about using a variable during pattern matching if we try to use this interpolated value directly
+    # when destructuring json.
+    key = "ID#{batter_id}"
+    %{"gameData" => %{"players" => %{^key => %{"primaryNumber" => raw}}}} = json
 
     case Integer.parse(raw) do
       {n, ""} -> n
@@ -31,7 +32,4 @@ defmodule Fenway.Game do
   defp retrieve(%{"liveData" => %{"plays" => %{"currentPlay" => %{"count" => count}}}}, :balls), do: Map.get(count, "balls")
   defp retrieve(%{"liveData" => %{"plays" => %{"currentPlay" => %{"count" => count}}}}, :outs), do: Map.get(count, "outs")
   defp retrieve(%{"liveData" => %{"plays" => %{"currentPlay" => %{"count" => count}}}}, :strikes), do: Map.get(count, "strikes")
-
-  defp dig(value, []), do: value
-  defp dig(map, [key | rest]), do: map |> Map.get(key) |> dig(rest)
 end
