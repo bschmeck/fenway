@@ -27,8 +27,16 @@ defmodule Fenway.Sync do
     notify("home_hits", {:number, game.home_stats.hits})
     notify("home_runs", {:number, game.home_stats.runs})
     notify("home_errors", {:number, game.home_stats.errors})
+    notify_innings("home", game.home_stats.innings, 1)
+    notify_innings("away", game.away_stats.innings, 1)
 
     {:noreply, game_id}
+  end
+
+  defp notify_innings(_, [], _), do: nil
+  defp notify_innings(team, [runs | rest], inning) do
+    notify("#{team}_#{inning}", {:number, runs})
+    notify_innings(team, rest, inning + 1)
   end
 
   defp notify(name, msg) do
