@@ -34,23 +34,17 @@ defmodule Fenway.Game do
     end
   end
 
-  defp retrieve(json, :balls), do: retrieve(json, path_to(:balls))
-  defp retrieve(json, :outs), do: retrieve(json, path_to(:outs))
-  defp retrieve(json, :strikes), do: retrieve(json, path_to(:strikes))
+  defp retrieve(%{"liveData" => %{"plays" => %{"currentPlay" => %{"count" => count}}}}, :balls), do: Map.get(count, "balls")
+  defp retrieve(%{"liveData" => %{"plays" => %{"currentPlay" => %{"count" => count}}}}, :outs), do: Map.get(count, "outs")
+  defp retrieve(%{"liveData" => %{"plays" => %{"currentPlay" => %{"count" => count}}}}, :strikes), do: Map.get(count, "strikes")
   defp retrieve(json, path) when is_list(path), do: dig(json, path)
   defp retrieve(json, :hits, team) when team == "home" or team == "away", do: retrieve(json, path_to(:hits, team))
   defp retrieve(json, :runs, team) when team == "home" or team == "away", do: retrieve(json, path_to(:runs, team))
   defp retrieve(json, :errors, team) when team == "home" or team == "away", do: retrieve(json, path_to(:errors, team))
-  defp retrieve(json, :innings, team) when team == "home" or team == "away" do
-    json
-    |> retrieve(path_to(:innings))
-    |> Enum.map(fn (hash) -> dig(hash, [team, "runs"]) end)
+  defp retrieve(%{"liveData" => %{"linescore" => %{"innings" => innings}}}, :innings, team) when team == "home" or team == "away" do
+    Enum.map(innings, fn (hash) -> dig(hash, [team, "runs"]) end)
   end
 
-  defp path_to(:balls), do: ~w[liveData plays currentPlay count balls]
-  defp path_to(:outs), do: ~w[liveData plays currentPlay count outs]
-  defp path_to(:strikes), do: ~w[liveData plays currentPlay count strikes]
-  defp path_to(:innings), do: ~w[liveData linescore innings]
   defp path_to(:errors, team), do: team_stats_path(team, "fielding", "errors")
   defp path_to(:hits, team), do: team_stats_path(team, "batting", "hits")
   defp path_to(:runs, team), do: team_stats_path(team, "batting", "runs")
