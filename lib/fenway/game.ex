@@ -12,14 +12,14 @@ defmodule Fenway.Game do
                 balls: retrieve(json, :balls),
                 strikes: retrieve(json, :strikes),
                 outs: retrieve(json, :outs),
-                home_hits: retrieve(json, :home_hits),
-                home_innings: retrieve(json, :home_innings),
-                home_runs: retrieve(json, :home_runs),
-                home_errors: retrieve(json, :home_errors),
-                away_hits: retrieve(json, :away_hits),
-                away_innings: retrieve(json, :away_innings),
-                away_runs: retrieve(json, :away_runs),
-                away_errors: retrieve(json, :away_errors)
+                home_hits: retrieve(json, :hits, "home"),
+                home_innings: retrieve(json, :innings, "home"),
+                home_runs: retrieve(json, :runs, "home"),
+                home_errors: retrieve(json, :errors, "home"),
+                away_hits: retrieve(json, :hits, "away"),
+                away_innings: retrieve(json, :innings, "away"),
+                away_runs: retrieve(json, :runs, "away"),
+                away_errors: retrieve(json, :errors, "away")
     }
   end
 
@@ -34,38 +34,26 @@ defmodule Fenway.Game do
     end
   end
 
-  defp retrieve(json, :away_innings) do
-    json
-    |> retrieve(path_to(:innings))
-    |> Enum.map(fn (hash) -> dig(hash, ~w[away runs]) end)
-  end
-  defp retrieve(json, :home_innings) do
-    json
-    |> retrieve(path_to(:innings))
-    |> Enum.map(fn (hash) -> dig(hash, ~w[home runs]) end)
-  end
-
   defp retrieve(json, :balls), do: retrieve(json, path_to(:balls))
   defp retrieve(json, :outs), do: retrieve(json, path_to(:outs))
   defp retrieve(json, :strikes), do: retrieve(json, path_to(:strikes))
-  defp retrieve(json, :away_errors), do: retrieve(json, path_to(:away_errors))
-  defp retrieve(json, :away_hits), do: retrieve(json, path_to(:away_hits))
-  defp retrieve(json, :away_runs), do: retrieve(json, path_to(:away_runs))
-  defp retrieve(json, :home_errors), do: retrieve(json, path_to(:home_errors))
-  defp retrieve(json, :home_hits), do: retrieve(json, path_to(:home_hits))
-  defp retrieve(json, :home_runs), do: retrieve(json, path_to(:home_runs))
   defp retrieve(json, path) when is_list(path), do: dig(json, path)
+  defp retrieve(json, :hits, team) when team == "home" or team == "away", do: retrieve(json, path_to(:hits, team))
+  defp retrieve(json, :runs, team) when team == "home" or team == "away", do: retrieve(json, path_to(:runs, team))
+  defp retrieve(json, :errors, team) when team == "home" or team == "away", do: retrieve(json, path_to(:errors, team))
+  defp retrieve(json, :innings, team) when team == "home" or team == "away" do
+    json
+    |> retrieve(path_to(:innings))
+    |> Enum.map(fn (hash) -> dig(hash, [team, "runs"]) end)
+  end
 
   defp path_to(:balls), do: ~w[liveData plays currentPlay count balls]
   defp path_to(:outs), do: ~w[liveData plays currentPlay count outs]
   defp path_to(:strikes), do: ~w[liveData plays currentPlay count strikes]
-  defp path_to(:away_errors), do: team_stats_path("away", "fielding", "errors")
-  defp path_to(:away_hits), do: team_stats_path("away", "batting", "hits")
-  defp path_to(:away_runs), do: team_stats_path("away", "batting", "runs")
-  defp path_to(:home_errors), do: team_stats_path("home", "fielding", "errors")
-  defp path_to(:home_hits), do: team_stats_path("home", "batting", "hits")
-  defp path_to(:home_runs), do: team_stats_path("home", "batting", "runs")
   defp path_to(:innings), do: ~w[liveData linescore innings]
+  defp path_to(:errors, team), do: team_stats_path(team, "fielding", "errors")
+  defp path_to(:hits, team), do: team_stats_path(team, "batting", "hits")
+  defp path_to(:runs, team), do: team_stats_path(team, "batting", "runs")
 
   defp team_stats_path(team, category, stat), do: ["liveData", "boxscore", "teams", team, "teamStats", category, stat]
 
