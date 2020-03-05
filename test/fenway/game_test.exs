@@ -48,4 +48,12 @@ defmodule Fenway.GameTest do
   test "it retrieves the number of errors the home team has committed", context do
     assert %{home_errors: 0} = Fenway.Game.parse(context[:json])
   end
+
+  test "it retrieves the away team's runs by inning", context do
+    assert %{away_innings: [0, 1]} = Fenway.Game.parse(context[:json])
+  end
+
+  test "it retrieves the home team's runs by inning", context do
+    assert %{home_innings: [1, nil]} = Fenway.Game.parse(context[:json])
+  end
 end
