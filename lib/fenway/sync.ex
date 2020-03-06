@@ -35,7 +35,7 @@ defmodule Fenway.Sync do
 
   defp notify_innings(_, [], _), do: nil
   defp notify_innings(team, [runs | rest], inning) do
-    notify("#{team}_#{inning}", {:number, runs})
+    notify("#{team}_#{inning}", {:number, runs || :blank})
     notify_innings(team, rest, inning + 1)
   end
 
