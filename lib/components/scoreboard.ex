@@ -66,12 +66,8 @@ defmodule Fenway.Component.Scoreboard do
     |> Fenway.Component.Number.add_to_graph({"home_9", :blank}, translate: {695, 185})
     |> Fenway.Component.Number.add_to_graph({"away_10", :blank}, translate: {760, 130})
     |> Fenway.Component.Number.add_to_graph({"home_10", :blank}, translate: {760, 185})
-    |> Fenway.Component.Number.add_to_graph({"away_runs", 0}, translate: {830, 130})
-    |> Fenway.Component.Number.add_to_graph({"home_runs", 0}, translate: {830, 185})
-    |> Fenway.Component.Number.add_to_graph({"away_hits", 0}, translate: {895, 130})
-    |> Fenway.Component.Number.add_to_graph({"home_hits", 0}, translate: {895, 185})
-    |> Fenway.Component.Number.add_to_graph({"away_errors", 0}, translate: {960, 130})
-    |> Fenway.Component.Number.add_to_graph({"home_errors", 0}, translate: {960, 185})
+    |> Fenway.Component.RHE.add_to_graph({"away_rhe", {0, 0, 0}}, translate: {830, 130})
+    |> Fenway.Component.RHE.add_to_graph({"home_rhe", {0, 0, 0}}, translate: {830, 185})
 
     {:ok, %{}, push: graph}
   end

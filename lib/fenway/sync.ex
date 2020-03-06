@@ -21,12 +21,8 @@ defmodule Fenway.Sync do
 
     notify("at_bat", {:at_bat, game.at_bat})
     notify("count", {:count, {game.balls, game.strikes, game.outs}})
-    notify("away_hits", {:number, game.away_stats.hits})
-    notify("away_runs", {:number, game.away_stats.runs})
-    notify("away_errors", {:number, game.away_stats.errors})
-    notify("home_hits", {:number, game.home_stats.hits})
-    notify("home_runs", {:number, game.home_stats.runs})
-    notify("home_errors", {:number, game.home_stats.errors})
+    notify("away_rhe", {:rhe, {game.away_stats.runs, game.away_stats.hits, game.away_stats.errors}})
+    notify("home_rhe", {:rhe, {game.home_stats.runs, game.home_stats.hits, game.home_stats.errors}})
     notify_innings("home", game.home_stats.innings, 1)
     notify_innings("away", game.away_stats.innings, 1)
 

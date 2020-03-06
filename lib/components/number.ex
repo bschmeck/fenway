@@ -14,6 +14,9 @@ defmodule Fenway.Component.Number do
 
     {:ok, %{}, push: graph_for(number)}
   end
+  def init(number, _opts) do
+    {:ok, %{}, push: graph_for(number)}
+  end
 
   def handle_cast({:number, number}, state) do
     {:noreply, state, [push: graph_for(number)]}
