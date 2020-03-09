@@ -1,6 +1,8 @@
 defmodule Fenway.Sync do
   use GenServer
 
+  alias Fenway.Game
+
   def start_link(state) do
     GenServer.start_link(__MODULE__, state, name: __MODULE__)
   end
@@ -17,12 +19,13 @@ defmodule Fenway.Sync do
     # 2. Push game state to Scenic components
     # 2a. Is it preferable to push the whole game to the scoreboard and let it update components?
     # 3. Schedule next sync for the future
-    game = Fenway.Game.get(game_id)
+    game = Game.get(game_id)
 
     notify("at_bat", {:at_bat, game.at_bat})
     notify("count", {:count, {game.balls, game.strikes, game.outs}})
     notify("away_rhe", {:rhe, {game.away_stats.runs, game.away_stats.hits, game.away_stats.errors}})
     notify("home_rhe", {:rhe, {game.home_stats.runs, game.home_stats.hits, game.home_stats.errors}})
+    notify_pitcher(game.inning, game.pitcher)
     notify_innings("home", game.home_stats.innings, 1)
     notify_innings("away", game.away_stats.innings, 1)
 
@@ -34,6 +37,9 @@ defmodule Fenway.Sync do
     notify("#{team}_#{inning}", {:number, runs || :blank})
     notify_innings(team, rest, inning + 1)
   end
+
+  defp notify_pitcher({:top, _}, pitcher), do: notify("home_pitcher", {:number, pitcher})
+  defp notify_pitcher({:bottom, _}, pitcher), do: notify("away_pitcher", {:number, pitcher})
 
   defp notify(name, msg) do
     case Registry.lookup(Registry.Components, name) do
