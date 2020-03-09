@@ -1,5 +1,5 @@
 defmodule Fenway.Game do
-  defstruct [:at_bat, :away_stats, :balls, :home_stats, :outs, :pitcher, :strikes]
+  defstruct [:at_bat, :away_stats, :balls, :home_stats, :inning, :outs, :pitcher, :strikes]
 
   def get(game_id) do
     {:ok, json} = Fetcher.fetch(game_id, FileClient)
@@ -14,7 +14,8 @@ defmodule Fenway.Game do
                 outs: retrieve(json, :outs),
                 home_stats: Fenway.TeamStats.parse(json, "home"),
                 away_stats: Fenway.TeamStats.parse(json, "away"),
-                pitcher: retrieve(json, :pitcher_number)
+                pitcher: retrieve(json, :pitcher_number),
+                inning: retrieve(json, :inning)
     }
   end
 
@@ -23,6 +24,8 @@ defmodule Fenway.Game do
   defp retrieve(%{"liveData" => %{"plays" => %{"currentPlay" => %{"count" => count}}}}, :balls), do: Map.get(count, "balls")
   defp retrieve(%{"liveData" => %{"plays" => %{"currentPlay" => %{"count" => count}}}}, :outs), do: Map.get(count, "outs")
   defp retrieve(%{"liveData" => %{"plays" => %{"currentPlay" => %{"count" => count}}}}, :strikes), do: Map.get(count, "strikes")
+  defp retrieve(%{"liveData" => %{"linescore" => %{"currentInning" => inning, "inningHalf" => "Bottom"}}}, :inning), do: {:bottom, inning}
+  defp retrieve(%{"liveData" => %{"linescore" => %{"currentInning" => inning, "inningHalf" => "Top"}}}, :inning), do: {:top, inning}
 
   defp player_number(json, player_id) do
     # Elixir complains about using a variable during pattern matching if we try to use this interpolated value directly
