@@ -28,6 +28,7 @@ defmodule Fenway.Sync do
     notify_pitcher(game.inning, game.pitcher)
     notify_innings("home", game.home_stats.innings, 1)
     notify_innings("away", game.away_stats.innings, 1)
+    notify_current_inning(game.inning)
 
     {:noreply, game_id}
   end
@@ -40,6 +41,9 @@ defmodule Fenway.Sync do
 
   defp notify_pitcher({:top, _}, pitcher), do: notify("home_pitcher", {:number, pitcher})
   defp notify_pitcher({:bottom, _}, pitcher), do: notify("away_pitcher", {:number, pitcher})
+
+  defp notify_current_inning({:top, inning}), do: notify("away_#{inning}", :active)
+  defp notify_current_inning({:bottom, inning}), do: notify("home_#{inning}", :active)
 
   defp notify(name, msg) do
     case Registry.lookup(Registry.Components, name) do
